@@ -17,7 +17,7 @@ class Plugin {
 
 	public static function getHooks() {
 		return [
-			//'system.settings' => [__CLASS__, 'getSettings'],
+			'system.settings' => [__CLASS__, 'getSettings'],
 			//'ui.menu' => [__CLASS__, 'getMenu'],
 		];
 	}
@@ -41,8 +41,11 @@ class Plugin {
 
 	public static function getSettings(GenericEvent $event) {
 		$settings = $event->getSubject();
-		$settings->add_text_setting('General', 'Icontact', 'abuse_imap_user', 'Icontact IMAP User:', 'Icontact IMAP Username', ABUSE_IMAP_USER);
-		$settings->add_text_setting('General', 'Icontact', 'abuse_imap_pass', 'Icontact IMAP Pass:', 'Icontact IMAP Password', ABUSE_IMAP_PASS);
+		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apiid', 'API ID', 'API ID', (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
+		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apiusername', 'API Username', 'API Username', (defined('ICONTACT_APIUSERNAME') ? ICONTACT_APIUSERNAME : ''));
+		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apipassword', 'API Password', 'API Password', (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
+		$settings->add_text_setting('Accounts', 'iContact', 'icontact_clientid', 'API Client ID', 'API Client ID', (defined('ICONTACT_CLIENTID') ? ICONTACT_CLIENTID : ''));
+		$settings->add_text_setting('Accounts', 'iContact', 'icontact_clientfolderid', 'API Client Folder ID', 'API Client Folder ID', (defined('ICONTACT_CLIENTFOLDERID') ? ICONTACT_CLIENTFOLDERID : ''));
 	}
 
 }
