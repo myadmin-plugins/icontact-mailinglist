@@ -39,7 +39,7 @@ class Plugin {
 	public static function doAccountActivated(GenericEvent $event) {
 		$account = $event->getSubject();
 		if (defined('ICONTACT_ENABLE') && ICONTACT_ENABLE == 1) {
-			self::icontact_setup($account->getAccountId());
+			self::doSetup($account->getAccountId());
 		}
 	}
 
@@ -60,7 +60,7 @@ class Plugin {
 	/**
 	 * @param int $custid
 	 */
-	public static function icontact_setup($custid) {
+	public static function doSetup($custid) {
 		myadmin_log('accounts', 'info', "icontact_setup($custid) Called", __LINE__, __FILE__);
 		$module = get_module_name('default');
 		$data = $GLOBALS['tf']->accounts->read($custid);
