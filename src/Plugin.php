@@ -28,6 +28,7 @@ class Plugin {
 	public static function getHooks() {
 		return [
 			'system.settings' => [__CLASS__, 'getSettings'],
+			'account.activated' => [__CLASS__, 'doAccountActivated'],
 			//'ui.menu' => [__CLASS__, 'getMenu'],
 		];
 	}
@@ -35,24 +36,11 @@ class Plugin {
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-	public static function getMenu(GenericEvent $event) {
-		$menu = $event->getSubject();
-		if ($GLOBALS['tf']->ima == 'admin') {
-			function_requirements('has_acl');
-					if (has_acl('client_billing'))
-							$menu->add_link('admin', 'choice=none.abuse_admin', '//my.interserver.net/bower_components/webhostinghub-glyphs-icons/icons/development-16/Black/icon-spam.png', 'Icontact');
+	public static function doAccountActivated(GenericEvent $event) {
+		$account = $event->getSubject();
+		if (defined('ICONTACT_ENABLE') && ICONTACT_ENABLE == 1) {
+			self::icontact_setup($account->getAccountId());
 		}
-	}
-
-	/**
-	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
-	 */
-	public static function getRequirements(GenericEvent $event) {
-		$loader = $event->getSubject();
-		$loader->add_requirement('class.Icontact', '/../vendor/detain/myadmin-icontact-mailinglist/src/Icontact.php');
-		$loader->add_requirement('deactivate_kcare', '/../vendor/detain/myadmin-icontact-mailinglist/src/abuse.inc.php');
-		$loader->add_requirement('deactivate_abuse', '/../vendor/detain/myadmin-icontact-mailinglist/src/abuse.inc.php');
-		$loader->add_requirement('get_abuse_licenses', '/../vendor/detain/myadmin-icontact-mailinglist/src/abuse.inc.php');
 	}
 
 	/**
@@ -60,11 +48,75 @@ class Plugin {
 	 */
 	public static function getSettings(GenericEvent $event) {
 		$settings = $event->getSubject();
+		$settings->add_dropdown_setting('Accounts', 'iContact', 'icontact_enable', 'Enable iContact', 'Enable/Disable iContact Mailing on Account Signup', (defined('ICONTACT_ENABLE') ? ICONTACT_ENABLE : '0'), ['0', '1'], ['No', 'Yes']);
 		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apiid', 'API ID', 'API ID', (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
 		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apiusername', 'API Username', 'API Username', (defined('ICONTACT_APIUSERNAME') ? ICONTACT_APIUSERNAME : ''));
 		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apipassword', 'API Password', 'API Password', (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
 		$settings->add_text_setting('Accounts', 'iContact', 'icontact_clientid', 'API Client ID', 'API Client ID', (defined('ICONTACT_CLIENTID') ? ICONTACT_CLIENTID : ''));
 		$settings->add_text_setting('Accounts', 'iContact', 'icontact_clientfolderid', 'API Client Folder ID', 'API Client Folder ID', (defined('ICONTACT_CLIENTFOLDERID') ? ICONTACT_CLIENTFOLDERID : ''));
+		$settings->add_text_setting('Accounts', 'iContact', 'icontact_lists', 'Lists/Folders', 'Lists to subscribe to (comma seperated ie 100,103)', (defined('ICONTACT_LISTS') ? ICONTACT_LISTS : ''));
 	}
 
+	/**
+	 * @param int $custid
+	 */
+	public static function icontact_setup($custid) {
+		myadmin_log('accounts', 'info', "icontact_setup($custid) Called", __LINE__, __FILE__);
+		$module = get_module_name('default');
+		$data = $GLOBALS['tf']->accounts->read($custid);
+		$lid = $data['account_lid'];
+		$contacts = [];
+		list($first, $last) = explode(' ', $data['name']);
+		$contact = [
+			'email' => $lid,
+			'firstName' => $first,
+			//			'lastName' =>  $last,
+			//			'street' => $data['address'],
+			//			'city' => $data['city'],
+			//			'state' => mb_substr($data['state'], 0, 10),
+			//			'postalCode' => $data['zip'],
+			//			'phone' => $data['phone'],
+			'status' => 'normal'
+		];
+		if (isset($data['company']))
+			$contact['business'] = $data['company'];
+		$contacts[] = $contact;
+		$json = json_encode($contacts);
+		$options = [
+			//            CURLOPT_HEADER => true,
+			CURLOPT_HTTPHEADER => [
+				'Accept: application/json',
+				'Content-Type: application/json',
+				'API-Version: 2.2',
+				'API-AppId: '.ICONTACT_APIID,
+				'API-Username: '.ICONTACT_APIUSERNAME,
+				'API-Password: '.ICONTACT_APIPASSWORD
+			],
+			CURLOPT_POST => 1,
+			CURLOPT_SSL_VERIFYPEER => false
+		];
+		$response = getcurlpage('https://app.icontact.com/icp/a/'.ICONTACT_CLIENTID.'/c/'.ICONTACT_CLIENTFOLDERID.'/contacts/', $json, $options);
+		myadmin_log('accounts', 'info', 'Response: '.$response, __LINE__, __FILE__);
+		$response = @json_decode($response);
+		if (isset($response->contacts[0]->contactId)) {
+			$contactid = $response->contacts[0]->contactId;
+			$lists = [];
+			$listsCsv = explode(',', ICONTACT_LISTS);
+			foreach ($listsCsv as $list)
+				$lists[] = (int)trim($list);
+			foreach ($lists as $listid) {
+				$json = json_encode(
+					[
+						[
+						'contactId' => $contactid,
+						'listId' => $listid,
+						'status' => 'normal'
+						]
+					]
+				);
+				$lresponse = getcurlpage('https://app.icontact.com/icp/a/'.ICONTACT_CLIENTID.'/c/'.ICONTACT_CLIENTFOLDERID.'/subscriptions/', $json, $options);
+				myadmin_log('accounts', 'info', 'Response: '.$lresponse, __LINE__, __FILE__);
+			}
+		}
+	}
 }
