@@ -68,7 +68,6 @@ class Plugin {
 	}
 
 	/**
-	 * @param int $custid
 	 */
 	public static function doSetup($accountId) {
 		myadmin_log('accounts', 'info', "icontact_setup($accountId) Called", __LINE__, __FILE__);
@@ -91,8 +90,7 @@ class Plugin {
 	}
 
 	/**
-	 * @param string $lid
-	 * @param false|array $parrams
+	 * @param false|array $params
 	 */
 	public static function doEmailSetup($email, $params = false) {
 		myadmin_log('accounts', 'info', "icontact_setup($email) Called", __LINE__, __FILE__);
@@ -125,7 +123,7 @@ class Plugin {
 			$lists = [];
 			$listsCsv = explode(',', ICONTACT_LISTS);
 			foreach ($listsCsv as $list)
-				$lists[] = (int)trim($list);
+				$lists[] = (int) trim($list);
 			foreach ($lists as $listid) {
 				$json = json_encode(
 					[
