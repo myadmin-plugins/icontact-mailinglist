@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Plugin {
 
 	public static $name = 'Icontact Plugin';
-	public static $description = 'Allows handling of Icontact emails and honeypots';
+	public static $description = 'Allows handling of Icontact based Mailing List Subscriptions';
 	public static $help = '';
 	public static $type = 'plugin';
 
