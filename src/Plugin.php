@@ -68,6 +68,7 @@ class Plugin {
 	}
 
 	/**
+	 * @param $accountId
 	 */
 	public static function doSetup($accountId) {
 		myadmin_log('accounts', 'info', "icontact_setup($accountId) Called", __LINE__, __FILE__);
@@ -90,7 +91,8 @@ class Plugin {
 	}
 
 	/**
-	 * @param false|array $params
+	 * @param                  $email
+	 * @param array|bool|false $params
 	 */
 	public static function doEmailSetup($email, $params = false) {
 		myadmin_log('accounts', 'info', "icontact_setup($email) Called", __LINE__, __FILE__);
