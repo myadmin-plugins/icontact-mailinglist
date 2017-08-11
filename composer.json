@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Detain\\MyAdminIcontact\\": "src\/"
+            "Detain\\MyAdminIcontact\\": "src/"
         }
     }
 }
