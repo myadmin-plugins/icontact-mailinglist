@@ -9,8 +9,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @package Detain\MyAdminIcontact
  */
-class Plugin {
-
+class Plugin
+{
 	public static $name = 'Icontact Plugin';
 	public static $description = 'Allows handling of Icontact based Mailing List Subscriptions';
 	public static $help = '';
@@ -19,13 +19,15 @@ class Plugin {
 	/**
 	 * Plugin constructor.
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 	}
 
 	/**
 	 * @return array
 	 */
-	public static function getHooks() {
+	public static function getHooks()
+	{
 		return [
 			'system.settings' => [__CLASS__, 'getSettings'],
 			'account.activated' => [__CLASS__, 'doAccountActivated'],
@@ -37,24 +39,29 @@ class Plugin {
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-	public static function doAccountActivated(GenericEvent $event) {
+	public static function doAccountActivated(GenericEvent $event)
+	{
 		$account = $event->getSubject();
-		if (defined('ICONTACT_ENABLE') && ICONTACT_ENABLE == 1)
+		if (defined('ICONTACT_ENABLE') && ICONTACT_ENABLE == 1) {
 			self::doSetup($account->getId());
+		}
 	}
 
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-	public static function doMailinglistSubscribe(GenericEvent $event) {
+	public static function doMailinglistSubscribe(GenericEvent $event)
+	{
 		$email = $event->getSubject();
-		if (defined('ICONTACT_ENABLE') && ICONTACT_ENABLE == 1)
+		if (defined('ICONTACT_ENABLE') && ICONTACT_ENABLE == 1) {
 			self::doEmailSetup($email);
+		}
 	}
 	/**
 	 * @param \Symfony\Component\EventDispatcher\GenericEvent $event
 	 */
-	public static function getSettings(GenericEvent $event) {
+	public static function getSettings(GenericEvent $event)
+	{
 		$settings = $event->getSubject();
 		$settings->add_dropdown_setting('Accounts', 'iContact', 'icontact_enable', 'Enable iContact', 'Enable/Disable iContact Mailing on Account Signup', (defined('ICONTACT_ENABLE') ? ICONTACT_ENABLE : '0'), ['0', '1'], ['No', 'Yes']);
 		$settings->add_text_setting('Accounts', 'iContact', 'icontact_apiid', 'API ID', 'API ID', (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
@@ -68,7 +75,8 @@ class Plugin {
 	/**
 	 * @param $accountId
 	 */
-	public static function doSetup($accountId) {
+	public static function doSetup($accountId)
+	{
 		myadmin_log('accounts', 'info', "icontact_setup($accountId) Called", __LINE__, __FILE__);
 		$module = get_module_name('default');
 		$data = $GLOBALS['tf']->accounts->read($accountId);
@@ -83,8 +91,9 @@ class Plugin {
 			//			'postalCode' => $data['zip'],
 			//			'phone' => $data['phone'],
 		];
-		if (isset($data['company']))
+		if (isset($data['company'])) {
 			$contact['business'] = $data['company'];
+		}
 		self::doEmailSetup($email, $contact);
 	}
 
@@ -92,14 +101,16 @@ class Plugin {
 	 * @param                  $email
 	 * @param array|bool|false $params
 	 */
-	public static function doEmailSetup($email, $params = false) {
+	public static function doEmailSetup($email, $params = false)
+	{
 		myadmin_log('accounts', 'info', "icontact_setup($email) Called", __LINE__, __FILE__);
 		$contact = [
 			'email' => $email,
 			'status' => 'normal'
 		];
-		if ($params !== false)
+		if ($params !== false) {
 			$contact = array_merge($contact, $params);
+		}
 		$contacts[] = $contact;
 		$json = json_encode($contacts);
 		$options = [
@@ -122,8 +133,9 @@ class Plugin {
 			$contactid = $response->contacts[0]->contactId;
 			$lists = [];
 			$listsCsv = explode(',', ICONTACT_LISTS);
-			foreach ($listsCsv as $list)
+			foreach ($listsCsv as $list) {
 				$lists[] = (int) trim($list);
+			}
 			foreach ($lists as $listid) {
 				$json = json_encode(
 					[
