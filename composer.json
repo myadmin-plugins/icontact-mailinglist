@@ -1,5 +1,5 @@
 {
-	"name": "detain/icontact-mailinglist",
+	"name": "detain/myadmin-icontact-mailinglist",
 	"type": "myadmin-plugin",
 	"description": "Icontact handling plugin for MyAdmin",
 	"keywords": [
