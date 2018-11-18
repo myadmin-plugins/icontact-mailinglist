@@ -66,13 +66,13 @@ class Plugin
          * @var \MyAdmin\Settings $settings
          **/
         $settings = $event->getSubject();
-		$settings->add_dropdown_setting(__('Accounts'), __('iContact'), 'icontact_enable', __('Enable iContact'), __('Enable/Disable iContact Mailing on Account Signup'), (defined('ICONTACT_ENABLE') ? ICONTACT_ENABLE : '0'), ['0', '1'], ['No', 'Yes']);
-		$settings->add_text_setting(__('Accounts'), __('iContact'), 'icontact_apiid', __('API ID'), __('API ID'), (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
-		$settings->add_text_setting(__('Accounts'), __('iContact'), 'icontact_apiusername', __('API Username'), __('API Username'), (defined('ICONTACT_APIUSERNAME') ? ICONTACT_APIUSERNAME : ''));
-		$settings->add_text_setting(__('Accounts'), __('iContact'), 'icontact_apipassword', __('API Password'), __('API Password'), (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
-		$settings->add_text_setting(__('Accounts'), __('iContact'), 'icontact_clientid', __('API Client ID'), __('API Client ID'), (defined('ICONTACT_CLIENTID') ? ICONTACT_CLIENTID : ''));
-		$settings->add_text_setting(__('Accounts'), __('iContact'), 'icontact_clientfolderid', __('API Client Folder ID'), __('API Client Folder ID'), (defined('ICONTACT_CLIENTFOLDERID') ? ICONTACT_CLIENTFOLDERID : ''));
-		$settings->add_text_setting(__('Accounts'), __('iContact'), 'icontact_lists', __('Lists/Folders'), __('Lists to subscribe to (comma seperated ie 100,103)'), (defined('ICONTACT_LISTS') ? ICONTACT_LISTS : ''));
+		$settings->add_dropdown_setting(_('Accounts'), _('iContact'), 'icontact_enable', _('Enable iContact'), _('Enable/Disable iContact Mailing on Account Signup'), (defined('ICONTACT_ENABLE') ? ICONTACT_ENABLE : '0'), ['0', '1'], ['No', 'Yes']);
+		$settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apiid', _('API ID'), _('API ID'), (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
+		$settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apiusername', _('API Username'), _('API Username'), (defined('ICONTACT_APIUSERNAME') ? ICONTACT_APIUSERNAME : ''));
+		$settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apipassword', _('API Password'), _('API Password'), (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
+		$settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_clientid', _('API Client ID'), _('API Client ID'), (defined('ICONTACT_CLIENTID') ? ICONTACT_CLIENTID : ''));
+		$settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_clientfolderid', _('API Client Folder ID'), _('API Client Folder ID'), (defined('ICONTACT_CLIENTFOLDERID') ? ICONTACT_CLIENTFOLDERID : ''));
+		$settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_lists', _('Lists/Folders'), _('Lists to subscribe to (comma seperated ie 100,103)'), (defined('ICONTACT_LISTS') ? ICONTACT_LISTS : ''));
 	}
 
 	/**
