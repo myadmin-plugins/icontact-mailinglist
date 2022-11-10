@@ -69,7 +69,7 @@ class Plugin
         $settings->add_dropdown_setting(_('Accounts'), _('iContact'), 'icontact_enable', _('Enable iContact'), _('Enable/Disable iContact Mailing on Account Signup'), (defined('ICONTACT_ENABLE') ? ICONTACT_ENABLE : '0'), ['0', '1'], ['No', 'Yes']);
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apiid', _('API ID'), _('API ID'), (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apiusername', _('API Username'), _('API Username'), (defined('ICONTACT_APIUSERNAME') ? ICONTACT_APIUSERNAME : ''));
-        $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apipassword', _('API Password'), _('API Password'), (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
+        $settings->add_password_setting(_('Accounts'), _('iContact'), 'icontact_apipassword', _('API Password'), _('API Password'), (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_clientid', _('API Client ID'), _('API Client ID'), (defined('ICONTACT_CLIENTID') ? ICONTACT_CLIENTID : ''));
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_clientfolderid', _('API Client Folder ID'), _('API Client Folder ID'), (defined('ICONTACT_CLIENTFOLDERID') ? ICONTACT_CLIENTFOLDERID : ''));
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_lists', _('Lists/Folders'), _('Lists to subscribe to (comma seperated ie 100,103)'), (defined('ICONTACT_LISTS') ? ICONTACT_LISTS : ''));
