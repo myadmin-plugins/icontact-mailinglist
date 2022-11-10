@@ -67,7 +67,7 @@ class Plugin
          **/
         $settings = $event->getSubject();
         $settings->add_dropdown_setting(_('Accounts'), _('iContact'), 'icontact_enable', _('Enable iContact'), _('Enable/Disable iContact Mailing on Account Signup'), (defined('ICONTACT_ENABLE') ? ICONTACT_ENABLE : '0'), ['0', '1'], ['No', 'Yes']);
-        $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apiid', _('API ID'), _('API ID'), (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
+        $settings->add_password_setting(_('Accounts'), _('iContact'), 'icontact_apiid', _('API ID'), _('API ID'), (defined('ICONTACT_APIID') ? ICONTACT_APIID : ''));
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_apiusername', _('API Username'), _('API Username'), (defined('ICONTACT_APIUSERNAME') ? ICONTACT_APIUSERNAME : ''));
         $settings->add_password_setting(_('Accounts'), _('iContact'), 'icontact_apipassword', _('API Password'), _('API Password'), (defined('ICONTACT_APIPASSWORD') ? ICONTACT_APIPASSWORD : ''));
         $settings->add_text_setting(_('Accounts'), _('iContact'), 'icontact_clientid', _('API Client ID'), _('API Client ID'), (defined('ICONTACT_CLIENTID') ? ICONTACT_CLIENTID : ''));
