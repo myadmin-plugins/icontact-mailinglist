@@ -84,7 +84,7 @@ class Plugin
         $module = get_module_name('default');
         $data = $GLOBALS['tf']->accounts->read($accountId);
         $email = $data['account_lid'];
-        list($first, $last) = explode(' ', $data['name']);
+        [$first, $last] = explode(' ', $data['name']);
         $contact = [
             'firstName' => $first,
             //			'lastName' =>  $last,
