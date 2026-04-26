@@ -82,7 +82,7 @@ class Plugin
     {
         myadmin_log('accounts', 'info', "icontact_setup($accountId) Called", __LINE__, __FILE__);
         $module = get_module_name('default');
-        $data = $GLOBALS['tf']->accounts->read($accountId);
+        $data = \MyAdmin\App::accounts()->read($accountId);
         $email = $data['account_lid'];
         [$first, $last] = explode(' ', $data['name']);
         $contact = [
