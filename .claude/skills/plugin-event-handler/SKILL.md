@@ -1,6 +1,6 @@
 ---
 name: plugin-event-handler
-description: Adds a new Symfony EventDispatcher hook to src/Plugin.php in the myadmin-icontact-mailinglist plugin. Registers the event in getHooks(), creates the static handler method with GenericEvent $event signature, and guards with ICONTACT_ENABLE check. Use when user says 'add event hook', 'new handler', 'listen for event', or needs to wire a new dot-notation event to Plugin. Do NOT use for modifying iContact API calls or doEmailSetup/doSetup logic. NOTE: for a plugin's contract/behavioral tests (tests/ContractTest.php, the shared harness, composer myadmin:scaffold-tests) use the plugin-contract-tests skill instead — this skill's reflection-only guidance predates that harness.
+description: Adds a new Symfony EventDispatcher hook to src/Plugin.php in the myadmin-icontact-mailinglist plugin. Registers the event in getHooks(), creates the static handler method with GenericEvent $event signature, and guards with ICONTACT_ENABLE check. Use when user says 'add event hook', 'new handler', 'listen for event', or needs to wire a new dot-notation event to Plugin. Do NOT use for modifying iContact API calls or doEmailSetup/doSetup logic. For a plugin's contract or behavioral tests (tests/ContractTest.php, the shared harness, composer myadmin:scaffold-tests) use the plugin-contract-tests skill instead — this skill's reflection-only guidance predates that harness.
 ---
 <!-- myadmin-contract-harness-notice -->
 > ### ⚠️ Read this before the rest of the file
